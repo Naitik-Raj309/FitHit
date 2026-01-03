@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLife - Your Journey to Better Health</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .card p, .card li {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .card ul {
+            margin-left: 20px;
+        }
+
+        .calculator {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .result {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #4caf50;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .result h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .workout-plan {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 5px solid #ff9800;
+        }
+
+        .workout-plan h4 {
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+
+        .meal-plan {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 5px solid #2196f3;
+        }
+
+        .meal-plan h4 {
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+
+        .tips-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tip-item {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .tip-item h4 {
+            color: #d84315;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .tab-btn {
+                min-width: 120px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏃‍♂️ FitLife 🥗</h1>
+            <p class="tagline">Transform Your Body, Elevate Your Mind, Live Your Best Life</p>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('home')">Home</button>
+            <button class="tab-btn" onclick="showTab('bmi')">BMI Calculator</button>
+            <button class="tab-btn" onclick="showTab('exercise')">Exercise Plans</button>
+            <button class="tab-btn" onclick="showTab('diet')">Diet Plans</button>
+            <button class="tab-btn" onclick="showTab('tips')">Health Tips</button>
+        </div>
+
+        <!-- Home Section -->
+        <div id="home" class="content-section active">
+            <h2>Welcome to Your Wellness Journey</h2>
+            <p style="font-size: 1.2em; line-height: 1.8; color: #555; margin: 20px 0;">
+                FitLife is your comprehensive guide to achieving optimal health through balanced nutrition and effective exercise. Whether you're starting your fitness journey or looking to level up, we're here to support every step of the way.
+            </p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🎯 Set Your Goals</h3>
+                    <p>Define clear, achievable fitness goals. Whether it's weight loss, muscle gain, or improved endurance, having a target keeps you motivated and focused.</p>
+                </div>
+                <div class="card">
+                    <h3>💪 Stay Consistent</h3>
+                    <p>Success comes from daily habits, not occasional efforts. Build a sustainable routine that fits your lifestyle and stick with it.</p>
+                </div>
+                <div class="card">
+                    <h3>🥗 Nutrition Matters</h3>
+                    <p>Your body is built in the kitchen. Proper nutrition fuels your workouts, aids recovery, and transforms your body composition.</p>
+                </div>
+                <div class="card">
+                    <h3>📈 Track Progress</h3>
+                    <p>Monitor your journey with measurements, photos, and performance metrics. Celebrate small wins and adjust your approach as needed.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BMI Calculator Section -->
+        <div id="bmi" class="content-section">
+            <h2>BMI Calculator</h2>
+            <p style="margin-bottom: 20px; color: #666;">Calculate your Body Mass Index to understand your current health status.</p>
+            
+            <div class="calculator">
+                <div class="input-group">
+                    <label for="weight">Weight (kg):</label>
+                    <input type="number" id="weight" placeholder="Enter your weight in kg">
+                </div>
+                <div class="input-group">
+                    <label for="height">Height (cm):</label>
+                    <input type="number" id="height" placeholder="Enter your height in cm">
+                </div>
+                <button onclick="calculateBMI()">Calculate BMI</button>
+                
+                <div id="bmiResult" class="result">
+                    <h3>Your Results:</h3>
+                    <p id="bmiValue"></p>
+                    <p id="bmiCategory"></p>
+                    <p id="bmiAdvice"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Section -->
+        <div id="exercise" class="content-section">
+            <h2>Exercise Plans</h2>
+            
+            <div class="workout-plan">
+                <h4>🔰 Beginner Plan (3 Days/Week)</h4>
+                <ul>
+                    <li><strong>Day 1 - Full Body:</strong> Squats (3x10), Push-ups (3x8), Plank (3x30s), Walking (20 min)</li>
+                    <li><strong>Day 2 - Cardio:</strong> Brisk walking or cycling (30 min), Jumping jacks (3x20), Mountain climbers (3x15)</li>
+                    <li><strong>Day 3 - Strength:</strong> Lunges (3x10 each leg), Dumbbell rows (3x12), Shoulder press (3x10), Stretching (10 min)</li>
+                </ul>
+            </div>
+
+            <div class="workout-plan">
+                <h4>💪 Intermediate Plan (4 Days/Week)</h4>
+                <ul>
+                    <li><strong>Day 1 - Upper Body:</strong> Bench press (4x10), Pull-ups (4x8), Dumbbell curls (3x12), Tricep dips (3x12)</li>
+                    <li><strong>Day 2 - Lower Body:</strong> Squats (4x12), Deadlifts (4x10), Leg press (3x15), Calf raises (3x20)</li>
+                    <li><strong>Day 3 - Cardio & Core:</strong> Running (30 min), Russian twists (3x20), Leg raises (3x15), Bicycle crunches (3x20)</li>
+                    <li><strong>Day 4 - Full Body HIIT:</strong> Burpees (4x15), Kettlebell swings (4x20), Box jumps (4x12), Battle ropes (4x30s)</li>
+                </ul>
+            </div>
+
+            <div class="workout-plan">
+                <h4>🔥 Advanced Plan (5-6 Days/Week)</h4>
+                <ul>
+                    <li><strong>Day 1 - Chest & Triceps:</strong> Heavy bench press, Incline press, Cable flys, Close-grip bench, Overhead extensions</li>
+                    <li><strong>Day 2 - Back & Biceps:</strong> Deadlifts, Pull-ups, Barbell rows, Lat pulldowns, Hammer curls, Preacher curls</li>
+                    <li><strong>Day 3 - Legs:</strong> Heavy squats, Front squats, Romanian deadlifts, Leg extensions, Hamstring curls, Calf work</li>
+                    <li><strong>Day 4 - Shoulders & Abs:</strong> Military press, Lateral raises, Face pulls, Hanging leg raises, Ab wheel, Planks</li>
+                    <li><strong>Day 5 - Full Body Power:</strong> Power cleans, Front squats, Push press, Box jumps, Sprint intervals</li>
+                    <li><strong>Day 6 - Active Recovery:</strong> Yoga, swimming, or light cardio with mobility work</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diet Section -->
+        <div id="diet" class="content-section">
+            <h2>Diet Plans</h2>
+            
+            <div class="meal-plan">
+                <h4>🥗 Weight Loss Plan (1500-1800 calories)</h4>
+                <p><strong>Breakfast:</strong> Oatmeal with berries and almonds, Green tea</p>
+                <p><strong>Mid-Morning:</strong> Apple with a handful of walnuts</p>
+                <p><strong>Lunch:</strong> Grilled chicken breast, Quinoa salad with vegetables, Olive oil dressing</p>
+                <p><strong>Afternoon Snack:</strong> Greek yogurt with chia seeds</p>
+                <p><strong>Dinner:</strong> Baked salmon, Steamed broccoli and sweet potato</p>
+                <p><strong>Evening:</strong> Herbal tea (if hungry: small portion of nuts)</p>
+            </div>
+
+            <div class="meal-plan">
+                <h4>💪 Muscle Building Plan (2500-3000 calories)</h4>
+                <p><strong>Breakfast:</strong> 4 egg omelette with vegetables, Whole grain toast, Protein shake</p>
+                <p><strong>Mid-Morning:</strong> Banana with peanut butter, Cottage cheese</p>
+                <p><strong>Lunch:</strong> Lean beef or turkey, Brown rice, Mixed vegetables, Avocado</p>
+                <p><strong>Pre-Workout:</strong> Oats with protein powder, Banana</p>
+                <p><strong>Post-Workout:</strong> Protein shake with creatine</p>
+                <p><strong>Dinner:</strong> Grilled chicken or fish, Sweet potato, Large salad with olive oil</p>
+                <p><strong>Before Bed:</strong> Casein protein shake or Greek yogurt</p>
+            </div>
+
+            <div class="meal-plan">
+                <h4>🌿 Balanced Maintenance Plan (2000-2200 calories)</h4>
+                <p><strong>Breakfast:</strong> Smoothie bowl with fruits, nuts, and seeds</p>
+                <p><strong>Mid-Morning:</strong> Mixed nuts and dried fruits</p>
+                <p><strong>Lunch:</strong> Whole grain wrap with lean protein, vegetables, and hummus</p>
+                <p><strong>Afternoon Snack:</strong> Carrot sticks with guacamole</p>
+                <p><strong>Dinner:</strong> Grilled fish or tofu, Quinoa, Roasted vegetables</p>
+                <p><strong>Evening:</strong> Dark chocolate square (85% cocoa) if desired</p>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <h3>📋 Essential Nutrition Guidelines</h3>
+                <ul>
+                    <li>Drink 8-10 glasses of water daily</li>
+                    <li>Eat protein with every meal (lean meats, fish, eggs, legumes)</li>
+                    <li>Include colorful vegetables and fruits for vitamins and antioxidants</li>
+                    <li>Choose complex carbs (whole grains, sweet potatoes, oats)</li>
+                    <li>Include healthy fats (avocado, nuts, olive oil, fatty fish)</li>
+                    <li>Avoid processed foods, excess sugar, and trans fats</li>
+                    <li>Meal prep on weekends to stay consistent</li>
+                    <li>Allow one cheat meal per week to stay sane</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Health Tips Section -->
+        <div id="tips" class="content-section">
+            <h2>Health & Wellness Tips</h2>
+            
+            <div class="tips-list">
+                <div class="tip-item">
+                    <h4>💤 Prioritize Sleep</h4>
+                    <p>Aim for 7-9 hours of quality sleep each night. Sleep is when your body recovers and builds muscle. Create a dark, cool sleeping environment and maintain a consistent sleep schedule.</p>
+                </div>
+
+                <div class="tip-item">
+                    <h4>💧 Stay Hydrated</h4>
+                    <p>Drink water throughout the day, especially before, during, and after workouts. Proper hydration improves performance, aids digestion, and helps with weight management.</p>
+                </div>
+
+                <div class="tip-item">
+                    <h4>🧘‍♂️ Manage Stress</h4>
+                    <p>Chronic stress increases cortisol, which can sabotage your fitness goals. Practice meditation, deep breathing, yoga, or any activity that helps you relax and unwind.</p>
+                </div>
+
+                <div class="tip-item">
+                    <h4>📱 Limit Screen Time</h4>
+                    <p>Excessive screen time, especially before bed, can disrupt sleep and increase sedentary behavior. Set boundaries and take regular breaks from electronic devices.</p>
+                </div>
+
+                <div class="tip-item">
+                    <h4>🏃‍♀️ Stay Active Throughout the Day</h4>
+                    <p>Don't just rely on your workout session. Take the stairs, walk during breaks, stretch regularly, and avoid sitting for extended periods. Every bit of movement counts!</p>
+                </div>
+
+                <div class="tip-item">
+                    <h4>🤝 Find a Workout Buddy</h4>
+                    <p>Having an accountability partner makes exercise more enjoyable and keeps you committed. Share your goals, celebrate progress together, and motivate each other on tough days.</p>
+                </div>
+
+                <div class="tip-item">
+                    <h4>📸 Document Your Journey</h4>
+                    <p>Take progress photos every 2-4 weeks. The scale doesn't always tell the full story. Visual progress can be incredibly motivating when numbers don't change.</p>
+                </div>
+
+                <div class="tip-item">
+                    <h4>🎯 Set SMART Goals</h4>
+                    <p>Make your goals Specific, Measurable, Achievable, Relevant, and Time-bound. Instead of "get fit," try "lose 10 pounds in 3 months by exercising 4x/week and eating 1800 calories daily."</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 FitLife - Your Partner in Health & Wellness</p>
+            <p>Remember: Consistency beats perfection. Start today, stay committed, transform forever! 💪</p>
+        </footer>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            const sections = document.querySelectorAll('.content-section');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100;
+            
+            if (!weight || !height || weight <= 0 || height <= 0) {
+                alert('Please enter valid weight and height values!');
+                return;
+            }
+            
+            const bmi = (weight / (height * height)).toFixed(1);
+            const resultDiv = document.getElementById('bmiResult');
+            const bmiValue = document.getElementById('bmiValue');
+            const bmiCategory = document.getElementById('bmiCategory');
+            const bmiAdvice = document.getElementById('bmiAdvice');
+            
+            let category, advice, color;
+            
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                advice = 'Focus on gaining weight through a balanced diet with increased caloric intake and strength training. Consult a nutritionist for personalized guidance.';
+                color = '#2196F3';
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'Normal Weight';
+                advice = 'Great job! Maintain your healthy weight through balanced nutrition and regular exercise. Keep up the good work!';
+                color = '#4CAF50';
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'Overweight';
+                advice = 'Consider adopting a calorie-controlled diet and increasing physical activity. Focus on sustainable lifestyle changes rather than quick fixes.';
+                color = '#FF9800';
+            } else {
+                category = 'Obese';
+                advice = 'It\'s important to consult with healthcare professionals. Focus on gradual weight loss through diet modifications and regular exercise. Small changes lead to big results!';
+                color = '#F44336';
+            }
+            
+            bmiValue.innerHTML = `<strong>Your BMI: ${bmi}</strong>`;
+            bmiCategory.innerHTML = `<strong>Category: <span style="color: ${color}">${category}</span></strong>`;
+            bmiAdvice.innerHTML = `<strong>Recommendation:</strong> ${advice}`;
+            
+            resultDiv.classList.add('show');
+        }
+    </script>
+</body>
+</html>
